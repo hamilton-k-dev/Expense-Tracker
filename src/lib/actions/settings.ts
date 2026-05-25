@@ -35,8 +35,9 @@ export async function updateProfile(data: {
       create: { userId, phone: data.phone ?? null, bio: data.bio ?? null, currency: data.currency },
     }),
   ]);
-  revalidatePath("/dashboard/settings");
-  revalidatePath("/dashboard");
+  for (const path of ["/dashboard", "/dashboard/settings", "/dashboard/transactions", "/dashboard/budgets", "/dashboard/reports", "/dashboard/categories"]) {
+    revalidatePath(path);
+  }
 }
 
 export async function updatePreferences(data: { currency: string }) {
@@ -46,7 +47,9 @@ export async function updatePreferences(data: { currency: string }) {
     update: { currency: data.currency },
     create: { userId, currency: data.currency },
   });
-  revalidatePath("/dashboard/settings");
+  for (const path of ["/dashboard", "/dashboard/settings", "/dashboard/transactions", "/dashboard/budgets", "/dashboard/reports"]) {
+    revalidatePath(path);
+  }
 }
 
 export async function updateNotifications(data: {

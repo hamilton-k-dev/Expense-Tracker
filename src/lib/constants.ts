@@ -27,4 +27,21 @@ export const COLOR_OPTIONS = [
   { color: "#06B6D4", bg: "#ECFEFF" },
 ];
 
-export const CURRENCIES = ["USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY"];
+export const CURRENCIES = [
+  // Major world currencies
+  "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY",
+  // African currencies
+  "XAF", "XOF", "NGN", "ZAR", "GHS", "KES", "MAD", "EGP",
+  "TZS", "UGX", "ETB", "DZD", "TND", "XPF", "MGA", "MZN",
+  "AOA", "BWP", "SCR", "MUR",
+];
+
+export const CURRENCY_LABELS: Record<string, string> = {
+  USD: "US Dollar", EUR: "Euro", GBP: "British Pound", JPY: "Japanese Yen",
+  CAD: "Canadian Dollar", AUD: "Australian Dollar", CHF: "Swiss Franc", CNY: "Chinese Yuan",
+  XAF: "CFA Franc BEAC", XOF: "CFA Franc BCEAO", NGN: "Nigerian Naira", ZAR: "South African Rand",
+  GHS: "Ghanaian Cedi", KES: "Kenyan Shilling", MAD: "Moroccan Dirham", EGP: "Egyptian Pound",
+  TZS: "Tanzanian Shilling", UGX: "Ugandan Shilling", ETB: "Ethiopian Birr", DZD: "Algerian Dinar",
+  TND: "Tunisian Dinar", XPF: "CFP Franc", MGA: "Malagasy Ariary", MZN: "Mozambican Metical",
+  AOA: "Angolan Kwanza", BWP: "Botswanan Pula", SCR: "Seychellois Rupee", MUR: "Mauritian Rupee",
+};

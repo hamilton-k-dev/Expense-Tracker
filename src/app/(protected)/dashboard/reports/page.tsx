@@ -1,14 +1,18 @@
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getLast6Months, startOfMonth, endOfMonth } from "@/lib/utils";
 import { MonthlyChartPoint, CategorySpendData } from "@/lib/types";
 import ReportsCharts from "@/components/reports/ReportsCharts";
+import { ensureDefaultCategories } from "@/lib/actions/categories";
+import { getTranslations, type Locale } from "@/lib/i18n";
 
 async function getReportsData(userId: string) {
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+  await ensureDefaultCategories(userId);
 
   const months = getLast6Months();
   const [categories, monthly6m] = await Promise.all([
@@ -52,17 +56,23 @@ async function getReportsData(userId: string) {
 }
 
 export default async function ReportsPage() {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const [session, cookieStore] = await Promise.all([
+    auth.api.getSession({ headers: await headers() }),
+    cookies(),
+  ]);
   const userId = session!.user.id;
+
+  const rawLang = cookieStore.get("lang")?.value;
+  const locale: Locale = rawLang === "fr" ? "fr" : "en";
+  const t = getTranslations(locale);
+
   const { monthly, categorySpend, totalIncome, totalExpenses } = await getReportsData(userId);
 
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Reports</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-          Visualise your financial trends over the last 6 months
-        </p>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">{t("reports.title")}</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{t("reports.subtitle")}</p>
       </div>
       <ReportsCharts
         monthly={monthly}

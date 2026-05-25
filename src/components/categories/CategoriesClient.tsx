@@ -5,21 +5,23 @@ import { toast } from "sonner";
 import { CategoryData } from "@/lib/types";
 import { deleteCategory } from "@/lib/actions/categories";
 import CategoryModal from "./CategoryModal";
+import { useUserPreferences } from "@/contexts/UserPreferencesContext";
 
 type Props = {
   categories: CategoryData[];
 };
 
 export default function CategoriesClient({ categories }: Props) {
+  const { t } = useUserPreferences();
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<CategoryData | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this category? Transactions will be moved to another category.")) return;
+    if (!confirm(t("categories.delete_confirm"))) return;
     setDeletingId(id);
     await deleteCategory(id);
-    toast.success("Category deleted");
+    toast.success(t("toasts.category_deleted"));
     setDeletingId(null);
   };
 
@@ -38,10 +40,10 @@ export default function CategoriesClient({ categories }: Props) {
       <div className="flex justify-end mb-4">
         <button
           onClick={() => { setEditing(null); setShowModal(true); }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors w-full sm:w-auto"
         >
           <i className="ri-add-line text-base"></i>
-          New Category
+          {t("categories.new")}
         </button>
       </div>
 
@@ -81,7 +83,7 @@ export default function CategoriesClient({ categories }: Props) {
               <p className="text-sm font-bold text-slate-800 dark:text-white">{cat.name}</p>
               {cat.isDefault && (
                 <span className="inline-block mt-1 text-xs px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-full">
-                  Default
+                  {t("categories.default_badge")}
                 </span>
               )}
             </div>
