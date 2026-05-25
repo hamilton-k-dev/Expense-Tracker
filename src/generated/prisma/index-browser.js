@@ -166,6 +166,56 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserSettingsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  currency: 'currency',
+  phone: 'phone',
+  bio: 'bio',
+  budgetAlerts: 'budgetAlerts',
+  weeklyReport: 'weeklyReport',
+  emailDigest: 'emailDigest',
+  pushNotifs: 'pushNotifs',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  icon: 'icon',
+  color: 'color',
+  bgColor: 'bgColor',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  categoryId: 'categoryId',
+  title: 'title',
+  amount: 'amount',
+  type: 'type',
+  date: 'date',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BudgetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  categoryId: 'categoryId',
+  amount: 'amount',
+  month: 'month',
+  year: 'year',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -180,13 +230,20 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.TransactionType = exports.$Enums.TransactionType = {
+  income: 'income',
+  expense: 'expense'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  UserSettings: 'UserSettings',
+  Category: 'Category',
+  Transaction: 'Transaction',
+  Budget: 'Budget'
 };
 
 /**

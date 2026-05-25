@@ -7,16 +7,25 @@ datasource db {
   provider = "postgresql"
 }
 
+enum TransactionType {
+  income
+  expense
+}
+
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
+  id            String        @id @default(uuid())
+  email         String        @unique
   name          String?
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean       @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   sessions      Session[]
   accounts      Account[]
+  settings      UserSettings?
+  categories    Category[]
+  transactions  Transaction[]
+  budgets       Budget[]
 
   @@map("user")
 }
@@ -66,4 +75,76 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model UserSettings {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currency     String   @default("USD")
+  phone        String?
+  bio          String?
+  budgetAlerts Boolean  @default(true)
+  weeklyReport Boolean  @default(true)
+  emailDigest  Boolean  @default(false)
+  pushNotifs   Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("user_settings")
+}
+
+model Category {
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  icon         String
+  color        String
+  bgColor      String
+  isDefault    Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@index([userId])
+  @@map("category")
+}
+
+model Transaction {
+  id         String          @id @default(uuid())
+  userId     String
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category        @relation(fields: [categoryId], references: [id])
+  title      String
+  amount     Float
+  type       TransactionType
+  date       DateTime
+  notes      String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([userId, date])
+  @@index([categoryId])
+  @@map("transaction")
+}
+
+model Budget {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  amount     Float
+  month      Int
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, categoryId, month, year])
+  @@index([userId])
+  @@map("budget")
 }
