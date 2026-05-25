@@ -14,8 +14,8 @@ type Props = {
 };
 
 export default function TransactionsClient({ transactions, categories }: Props) {
-  const { currency, t } = useUserPreferences();
-  const fmt = (n: number) => formatCurrency(n, currency);
+  const { currency, language, t } = useUserPreferences();
+  const fmt = (n: number) => formatCurrency(n, currency, language);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<TransactionData | null>(null);
   const [search, setSearch] = useState("");

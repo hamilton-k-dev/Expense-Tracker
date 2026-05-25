@@ -15,8 +15,8 @@ type Props = {
 };
 
 export default function ReportsCharts({ monthly, categorySpend, totalIncome, totalExpenses }: Props) {
-  const { currency, t } = useUserPreferences();
-  const fmt = (n: number) => formatCurrency(n, currency);
+  const { currency, language, t } = useUserPreferences();
+  const fmt = (n: number) => formatCurrency(n, currency, language);
 
   const savings = totalIncome - totalExpenses;
   const savingsRate = totalIncome > 0 ? (savings / totalIncome) * 100 : 0;

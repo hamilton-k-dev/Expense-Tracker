@@ -3,11 +3,12 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { CategorySpendData } from "@/lib/types";
 import { useUserPreferences } from "@/contexts/UserPreferencesContext";
+import { formatCurrency } from "@/lib/utils";
 
 type Props = { data: CategorySpendData[] };
 
 export default function ExpensePieChart({ data }: Props) {
-  const { t } = useUserPreferences();
+  const { currency, language, t } = useUserPreferences();
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
@@ -27,7 +28,7 @@ export default function ExpensePieChart({ data }: Props) {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value) => [`$${Number(value).toFixed(2)}`, ""]}
+                formatter={(value) => [formatCurrency(Number(value), currency, language), ""]}
                 contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
               />
             </PieChart>
@@ -39,7 +40,7 @@ export default function ExpensePieChart({ data }: Props) {
                   <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }}></span>
                   <span className="text-xs text-slate-600 dark:text-slate-400">{item.name}</span>
                 </div>
-                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">${item.amount.toFixed(0)}</span>
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{formatCurrency(item.amount, currency, language)}</span>
               </div>
             ))}
           </div>

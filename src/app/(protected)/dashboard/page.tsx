@@ -103,7 +103,7 @@ export default async function DashboardPage() {
   const [{ totalIncome, totalExpenses, balance, savings, monthly, categorySpend, recentTx, categories }, settings] =
     await Promise.all([getDashboardData(userId), getSettings()]);
 
-  const fmt = (n: number) => formatCurrency(n, settings.currency);
+  const fmt = (n: number) => formatCurrency(n, settings.currency, locale);
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">

@@ -16,8 +16,8 @@ type Props = {
 };
 
 export default function BudgetsClient({ budgets, categories, month, year }: Props) {
-  const { currency, t } = useUserPreferences();
-  const fmt = (n: number) => formatCurrency(n, currency);
+  const { currency, language, t } = useUserPreferences();
+  const fmt = (n: number) => formatCurrency(n, currency, language);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<BudgetData | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);

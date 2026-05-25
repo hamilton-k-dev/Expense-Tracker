@@ -43,10 +43,9 @@ export function UserPreferencesProvider({
   const setCurrency = useCallback((c: string) => setCurrencyState(c), []);
 
   const setLanguage = useCallback((l: Locale) => {
-    setLanguageState(l);
-    // Store in cookie (server can read) + localStorage (fallback)
     document.cookie = `lang=${l}; path=/; max-age=31536000; SameSite=Lax`;
     localStorage.setItem("language", l);
+    window.location.reload();
   }, []);
 
   const t = useCallback(
