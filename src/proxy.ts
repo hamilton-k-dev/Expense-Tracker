@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 
-const PUBLIC_ROUTES = ["/", "/login", "/register", "/reset-password", "/verify-email"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/register",
+  "/reset-password",
+  "/verify-email",
+  "/docs",
+];
 const AUTH_ROUTES = ["/login", "/register"];
 
 export async function proxy(request: NextRequest) {
@@ -12,7 +19,9 @@ export async function proxy(request: NextRequest) {
   const isAuthenticated = !!session;
 
   const matchesRoute = (routes: string[]) =>
-    routes.some((route) => pathname === route || pathname.startsWith(route + "/"));
+    routes.some(
+      (route) => pathname === route || pathname.startsWith(route + "/"),
+    );
 
   if (isAuthenticated && matchesRoute(AUTH_ROUTES)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
